@@ -19,7 +19,7 @@
 
 ### Commands
 
-#### _Install-Package_ #### 
+#### _Install-Package_  
 
 ##### Description 
 > Directly calls package installer command based on supported -Types 
@@ -57,7 +57,7 @@ Valid Options
 Install-Packages
 
 
-#### _Install-Package_ #### 
+#### _Install-Package_ 
 
 ##### Description 
 > Directly calls package installer command based on supported -Types 
@@ -89,7 +89,7 @@ _Optional_
 
 
 
-#### _Initialize-PackageInstaller_ #### 
+#### _Initialize-PackageInstaller_  
 
 ##### Description 
 > Directly calls package installer command based on supported -Types 
@@ -104,12 +104,12 @@ _Optional_
 
 
 
-#### _Install-Chocolatey_ #### 
+#### _Install-Chocolatey_  
 
 ##### Description 
 > Checks if chocolatey is installed and Runs Chocolatey Install script if not present  
 
-#### _Install-NPM_ #### 
+#### _Install-NPM_  
 
 ##### Description 
 > Checks if NPM is installed and installs NodeJS.Install Package from chocolatey feed if not present 
@@ -117,19 +117,42 @@ _Optional_
 > \* Also Runs Install-Chocolatey Check if NPM is missing  
 
 
-#### _Install-Yarn_ #### 
+#### _Install-Yarn_  
 
 ##### Description 
 > Checks if Yarn is installed and installs Yarn from NPM feed if  not present 
 > 
 > \* Also Runs Install-NPM Check if Yarn is missing  
 
-#### _Install-VSCode_ #### 
+#### _Install-VSCode_  
 
 ##### Description 
-> Checks if Visual Studio Code is installed and installs Yarn from Choclatey feed if  not present 
+> Checks if Visual Studio Code is installed and installs VisualStudioCode package from Choclatey feed if  not present 
 > 
 > \* Also Runs Install-NPM Check if Yarn is missing  
+
+
+#### _Add-EnvironmentVariable_  
+
+##### Description 
+> Creates new Environment Variable if one doesn't exist already and sets a value to it 
+
+#### -Name
+___Required___
+
+> variable name to be set  
+
+#### -Scope 
+>Environment Level for variable 
+##### Valid Options 
+* Machine  
+* User 
+* Process
+
+#### -Force
+> overrides _if exists_ check and forces new value to be written 
+
+
 
 
 
