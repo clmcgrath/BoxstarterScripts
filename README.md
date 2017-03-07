@@ -32,7 +32,7 @@
 
 ___Required___
 
-> Package Identifier for provideder
+> Package Identifier for provider
 
 
 #### -Type  
@@ -129,7 +129,7 @@ _Optional_
 ##### Description 
 > Checks if Visual Studio Code is installed and installs VisualStudioCode package from Choclatey feed if  not present 
 > 
-> \* Also Runs Install-NPM Check if Yarn is missing  
+> \* Also Runs Install-Chocolatey Check if VSCode is missing  
 
 
 #### _Add-EnvironmentVariable_  
