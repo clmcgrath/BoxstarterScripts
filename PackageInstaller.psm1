@@ -17,7 +17,7 @@ function Initialize-PackageInstaller{
         $PathToConfig
     )
     $script:ConfigPath = $PathToConfig
-    Remove-Variable -Name "script:PackageConfig" 
+    Remove-Variable script:PackageConfig -ErrorAction SilentlyContinue 
     
 
 }
@@ -87,9 +87,16 @@ function Get-Packages($Id, [PackageType] $Type = [PackageType]::All  ){
 }
 
 function Get-HttpPackageConfig ($Uri){
-    $response = Invoke-WebRequest -Uri $Uri 
-    $content = ([xml] $response.Content).package
+    
+    $cachePath = Join-Path "$env:TEMP\PackageInstaller\" "$(Get-Date -Format "u")\Packages.xml"
+    
+    $script:ConfigPath = $cachePath
+
+    Invoke-WebRequest -Uri $Uri -UseBasicParsing -OutFile $cachePath 
+    $content = ([xml] (Get-Content $script:ConfigPath)).packages
+     
     Write-Host "Downloaded packaged configuration from $Uri"
+    return $content
 }
 
 
@@ -97,12 +104,11 @@ function Get-PackageConfig{
     if (-not (Test-Path variable:script:PackageConfig)) {
         $content = $null
         if ($script:ConfigPath -match "^https?://") {
-            $content = Get-HttpPackageConfig -Uri $script:ConfigPath
+            $content = (Get-HttpPackageConfig -Uri $script:ConfigPath)
         }
         else {
             $content = ([xml] (Get-Content $script:ConfigPath)).packages
         }
-        $script:PackageConfig = ([xml] (Get-Content $script:ConfigPath)).packages
     }
     
     $script:PackageConfig

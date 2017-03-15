@@ -4,9 +4,17 @@
         {
             "type": "PowerShell",
             "request": "launch",
-            "name": "PowerShell Launch (Script)",
+            "name": "Start - Test.xml",
             "script": "${workspaceRoot}/Install.ps1",
             "args": ["-ConfigPath ./Test.xml"],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "Start - Test.xml - Remote (gist)",
+            "script": "${workspaceRoot}/Install.ps1",
+            "args": ["-ConfigPath https://gist.githubusercontent.com/clmcgrath/4b9e53487aff2771f1ead7ad2c20744f/raw/05992600829ce4fe60c48c24aafd5d50c930adf1/Test.xml"],
             "cwd": "${workspaceRoot}"
         }
     ]
