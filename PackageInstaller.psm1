@@ -10,6 +10,15 @@ enum PackageType {
     Yarn
 }
 
+class Constants {
+    static [string] $HttpMatch = "^https?://"
+}
+
+if (-not (Get-Module -Name Pscx))
+{
+    Install-Module -Name Pscx -AllowClobber
+}
+
 function Initialize-PackageInstaller{
     param(
         [Parameter(Mandatory, Position=0)]
@@ -24,10 +33,11 @@ function Initialize-PackageInstaller{
 function Install-Package {
     [CmdletBinding()]
     param(
-        # id of package to install
+        # Id of package to install
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]
         $Id,
+
         # Type of package to install ie npm, chocolatey etc  
         [Parameter(ValueFromPipelineByPropertyName)]
         [PackageType]
@@ -100,7 +110,7 @@ function Get-HttpPackageConfig ($Uri){
 function Get-PackageConfig{
     if (-not (Test-Path variable:script:PackageConfig)) {
         $content = $null
-        if ($script:ConfigPath -match "^https?://") {
+        if ($script:ConfigPath -match [Constants]::HttpMatch ) {
             $content = (Get-HttpPackageConfig -Uri $script:ConfigPath)
         }
         else {
@@ -120,6 +130,37 @@ function IsDisabled($element){
     }
     else {
         $false
+    }
+
+}
+
+function Expand-ZipFile
+{
+
+    param([string]$ZipFile, [string]$Target)
+    if ($ZipFile -match [Constants]::HttpMatch) {
+
+    }
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
+    
+}
+
+function Get-7ZipVersion {
+    [CmdletBinding()]
+    param()
+    
+    [string] $output = Invoke-Expression "7z | Select -Skip 1 -First 1" -ErrorAction SilentlyContinue
+    if ($output)
+    {
+        $next = $output.Split(":") | Select-Object -First 1
+        $versionString = $next.Trim().Split(" ") | Select-Object -Last 1
+        try {
+            [version]::Parse($versionString)
+        }
+        catch [System.ArgumentException] {
+            
+        }
+         
     }
 
 }
@@ -160,16 +201,29 @@ function Get-PackageConfigSection($section = "package", $type, $id, [switch] $In
     }
 }
 #Install Package Systems
+    function Install-7Zip{
+        [CmdletBinding()]
+        param()
 
+            if(-not (Get-7ZipVersion)) {
+                Write-Warning "7Zip Commamd Line Tools Not Installed..."
+                Write-Warning "Installing..."
+                Install-ChocolateyPackage "7zip.commandline"
+            }else{
+                Write-Verbose  "7Zip already installed skipping..."
+            }
+    }
     #Installs Chocolatey Package Manager if not already installed
-    function Install-Chocolatey([switch] $Verbose){
+    function Install-Chocolatey(){
+        [CmdletBinding()]
+        param()
 
         if(-not (Test-Path -Path env:ChocolateyPath)) {
             Write-Warning "Chocolatey Not Installed..."
             Write-Warning "Installing..."
             Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
         }elseif ($Verbose) {
-            Write-Host -ForegroundColor Yellow "Chocolatey already installed skipping..."
+            Write-Verbose "Chocolatey already installed skipping..."
         }
     }
 
@@ -203,26 +257,23 @@ function Get-PackageConfigSection($section = "package", $type, $id, [switch] $In
     }
 
     #Installs Yarn Package Manager if not already installed
-    function Install-Yarn([switch] $Verbose){
+    function Install-Yarn(){
+        [CmdletBinding()]
+        param()
+
         $version = Get-YarnVersion
         
         if(-not ($version)) {
             Write-Warning "Yarn Not Installed..."
             Write-Warning "Installing Yarn via NPM"
         
-            Install-NPM -Verbose
+            Install-NPM 
             Install-NPMPackage -Name "Yarn"
 
-        }elseif ($Verbose) {
-            Write-Host -ForegroundColor Yellow "Yarn already installed, Skipping..."
+        }else {
+            Write-Verbose -ForegroundColor Yellow "Yarn already installed, Skipping..."
         }
     }
-
-
-
-
-
-
 
 ##Package Installers 
 
@@ -302,7 +353,7 @@ function Get-PackageConfigSection($section = "package", $type, $id, [switch] $In
             Write-Header "Installing $type Package $name" 
             Install-VSCode
         
-            $verboseCommand = if($Verbose) {
+            $verboseCommand = if($VerbosePreference -eq [System.Management.Automation.ActionPreference]::Continue ) {
                 " --verbose "
             } 
         
@@ -362,10 +413,6 @@ function Get-PackageConfigSection($section = "package", $type, $id, [switch] $In
         }
 
     }
-
-
-
-
 
 ##Tools
     
