@@ -89,7 +89,7 @@ function Get-HttpPackageConfig ($Uri){
     
     $cachePath = Join-Path "$env:TEMP\PackageInstaller\" "$(Get-Date -Format "u")\Packages.xml"
     
-    $xml = [xml]( Invoke-WebRequest  -Uri $Uri -ContentType "application/xml" | Select-Object Content).Content  
+    $xml = [xml]( Invoke-WebRequest -UseBasicParsing  -Uri $Uri -ContentType "application/xml" | Select-Object Content).Content  
     $content = $xml.packages
     
     Write-Host "Downloaded packaged configuration from $Uri"
