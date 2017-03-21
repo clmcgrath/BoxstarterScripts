@@ -578,7 +578,12 @@ function Get-WindowsFeature{
         $params.Add("PackageName", $PackageName)
     }
     
-    Get-WindowsOptionalFeature -Online:$Online 
+    $features = Get-WindowsOptionalFeature -Online:$Online
+    $features = $features | Where-Object {$_.State –eq "Disabled" } | Format-Table 
+}
+
+function Get-InstalledFeatures{
+    Get-WindowsFeature | Where-Object { $_.State -eq "Enabled"}
 }
 
 

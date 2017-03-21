@@ -1,42 +1,51 @@
-<packages id="Laptop"  >
+<configuration id="Laptop">
+
+    <features>
+        <enable name="IIS-WebServerRole" />
+        <disable name="MSMQ-MultiCast" />
+    </features>
+
+    <packages>
+            
         
+        <package disabled="true" type="Chocolatey" id="GoogleChrome" />
+        <package type="Chocolatey" id="javaruntime" />
+        <package type="Chocolatey" id="notepadplusplus" />
+        
+        <package type="zipinstaller" install="nvm-setup.exe" source="https://github.com/coreybutler/nvm-windows/releases/download/1.1.2/nvm-setup.zip" />
+        
+        <package type="zip" 
+            target="c:\Temp\.zip-extract\nvm" 
+            source="https://github.com/coreybutler/nvm-windows/releases/download/1.1.2/nvm-setup.zip" />
 
-    <package disabled="true" type="Chocolatey" id="GoogleChrome" />
-    <package type="Chocolatey" id="javaruntime" />
-    <package type="Chocolatey" id="notepadplusplus" />
-    
-    <package type="zipinstaller" install="nvm-setup.exe" source="https://github.com/coreybutler/nvm-windows/releases/download/1.1.2/nvm-setup.zip" />
-    
-    <package type="zip" 
-        target="c:\Temp\.zip-extract\nvm" 
-        source="https://github.com/coreybutler/nvm-windows/releases/download/1.1.2/nvm-setup.zip" />
+        <package 
+            type="installer" 
+            msi="true" 
+            command="nvm-setup.exe" 
+            location="https://github.com/coreybutler/nvm-windows/releases/download/1.1.2/nvm-setup.zip" />
+        
+        
+        <package 
+            type="VSCodeExtension" 
+            id="cdsama.tortoise-svn-for-vscode" />
 
-    <package 
-        type="installer" 
-        msi="true" 
-        command="nvm-setup.exe" 
-        location="https://github.com/coreybutler/nvm-windows/releases/download/1.1.2/nvm-setup.zip" />
-    
-    
-    <package 
-        type="VSCodeExtension" 
-        id="cdsama.tortoise-svn-for-vscode" />
+        <package 
+            type="VSCodeExtension" 
+            id="codezombiech.gitignore" />
 
-    <package 
-        type="VSCodeExtension" 
-        id="codezombiech.gitignore" />
+        <package 
+            type="npm" 
+            id="yo" />
+        
+        <package 
+            type="npm" 
+            id="grunt-cli" />
+        
+        <package 
+            type="yarn" 
+            id="rimraf" />
+        
+        
+    </packages>
 
-    <package 
-        type="npm" 
-        id="yo" />
-    
-    <package 
-        type="npm" 
-        id="grunt-cli" />
-    
-    <package 
-        type="yarn" 
-        id="rimraf" />
-    
-    
-</packages>
+</configuration>
