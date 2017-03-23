@@ -1,8 +1,10 @@
-function Disable-UAC{
-
+function Disable-UAC {
     Write-Output "Disabling UAC"
     Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA  -Value 0
-
+}
+function Enable-UAC {
+    Write-Output "Enabling UAC"
+    Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA  -Value 1
 }
 
 function Enable-RemoteDesktop{
@@ -316,7 +318,7 @@ function Get-LibraryNames {
     return $retVal
 }
 
-function Install-WindowsUpdate {
+function Install-WindowsUpdates {
   
     param(
         [switch]$getUpdatesFromMS, 
@@ -422,7 +424,7 @@ function Install-WindowsUpdate {
     }
 }
 
-function Download-Update($update) {
+function Invoke-UpdateDownload($update) {
     $downloadSession=Start-TimedSection "Download of $($update.Title)"
     $updates= new-Object -com "Microsoft.Update.UpdateColl"
     $updates.Add($update) | out-null

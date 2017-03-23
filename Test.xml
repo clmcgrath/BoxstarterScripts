@@ -1,14 +1,36 @@
-<configuration id="Laptop">
+
+<configuration id="Laptop" >
+    <systemOptions>
+        <disable name="BingSearhFromExplorer" /> 
+        <disable name="IEEnhancedSecurity" />
+        <enable name="RemoteDesktop" /> 
+        <enable name="UAC" /> 
+    </systemOptions>
+
+    <taskbarOptions 
+        lockstate="Unlocked"
+        size="Small"
+        dock="Right"
+        combine="Always" />
+    
+    <startScreenoptions>
+        <enable name="BootToDesktop" />
+        <enable name="DesktopBackgroundOnStart" />
+        <enable name="ShowStartOnActiveScreen" />
+        <enable name="ShowAppsViewOnStartScreen" />
+        <enable name="SearchEverywhereInAppsView" />
+        <enable name="ListDesktopAppsFirst" />
+    </startScreenoptions>
 
     <features>
-        <enable name="IIS-WebServerRole" />
-        <disable name="MSMQ-MultiCast" />
+        <enable   name="IIS-WebServerRole" />
+        <disable  name="MSMQ-MultiCast" />
     </features>
 
     <packages>
-            
         
         <package disabled="true" type="Chocolatey" id="GoogleChrome" />
+        
         <package type="Chocolatey" id="javaruntime" />
         <package type="Chocolatey" id="notepadplusplus" />
         
@@ -23,28 +45,14 @@
             msi="true" 
             command="nvm-setup.exe" 
             location="https://github.com/coreybutler/nvm-windows/releases/download/1.1.2/nvm-setup.zip" />
-        
-        
+           
         <package 
             type="VSCodeExtension" 
             id="cdsama.tortoise-svn-for-vscode" />
 
         <package 
-            type="VSCodeExtension" 
-            id="codezombiech.gitignore" />
-
-        <package 
-            type="npm" 
-            id="yo" />
-        
-        <package 
             type="npm" 
             id="grunt-cli" />
-        
-        <package 
-            type="yarn" 
-            id="rimraf" />
-        
         
     </packages>
 
